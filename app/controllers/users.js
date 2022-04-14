@@ -7,7 +7,7 @@ module.exports = class Users {
     this.run();
   }
 
-  run() {
+  postUsers() {
     this.app.post("/users/", (req, res) => {
       try {
         const userModel = new this.UserModel(req.body);
@@ -28,5 +28,9 @@ module.exports = class Users {
         });
       }
     });
+  }
+
+  run() {
+    this.postUsers();
   }
 };

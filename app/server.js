@@ -1,8 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-
 const bodyParser = require("body-parser");
-
 const config = require("./config.js");
 const routes = require("./controllers/routes.js");
 
@@ -15,7 +13,6 @@ module.exports = class Server {
   dbConnect() {
     const host = this.config.mongodb.host;
     const connect = mongoose.createConnection(host);
-
     connect.on("error", (err) => {
       setTimeout(() => {
         console.log(`[ERROR] users api dbConnect()-> ${err}`);
@@ -51,7 +48,6 @@ module.exports = class Server {
 
   routes() {
     new routes.Users(this.app, this.connect);
-
     this.app.use((req, res) => {
       res.status(404).json({
         code: 404,
@@ -60,9 +56,15 @@ module.exports = class Server {
     });
   }
 
+  secure() {
+    this.app.use(helmet());
+    this.app.disable("x-powered-by");
+  }
+
   run() {
     try {
       this.connect = this.dbConnect();
+      this.secure();
       this.middleware();
       this.routes();
       this.app.listen(this.config.express.port); // Permet de lancer l'api express

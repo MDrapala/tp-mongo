@@ -27,7 +27,7 @@ const Schema = new mongoose.Schema(
     },
   },
   {
-    collection: "evenement",
+    collection: "events",
     minimize: false,
     versionKey: false,
   }
