@@ -1,5 +1,5 @@
 const UserModel = require("../models/user.js");
-
+const auth = require("../middleware/auth.js");
 module.exports = class Users {
   constructor(app, connect) {
     this.app = app;
@@ -14,7 +14,8 @@ module.exports = class Users {
         userModel
           .save()
           .then((user) => {
-            res.status(200).json(user || {});
+            const token = user.generateAuthToken();
+            res.status(200).json({ user, token } || {});
           })
           .catch((err) => {
             console.log(err);
@@ -30,7 +31,25 @@ module.exports = class Users {
     });
   }
 
+  postLogin() {
+    try {
+      const user = await this.UserModel.findByCredentials(
+        req.body.email,
+        req.body.password
+      );
+      const token = await user.generateAuthToken();
+      res.status(200).json({ user, token });
+    } catch (err) {
+      console.error(`[ERROR] post:login -> ${err}`);
+      res.status(400).json({
+        code: 400,
+        message: "Bad Request",
+      });
+    }
+  }
+
   run() {
     this.postUsers();
+    this.postLogin();
   }
 };

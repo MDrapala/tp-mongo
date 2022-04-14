@@ -1,4 +1,4 @@
-const EventModel = require("../models/event.js");
+const EventModel = require("../models/events.js");
 const UserModel = require("../models/user.js");
 
 module.exports = class Events {

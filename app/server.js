@@ -67,7 +67,7 @@ module.exports = class Server {
       this.secure();
       this.middleware();
       this.routes();
-      this.app.listen(this.config.express.port); // Permet de lancer l'api express
+      this.app.listen(`Serveur is up port ${this.config.express.port}`);
     } catch (err) {
       console.error(`[ERROR Server] -> ${err}`);
     }

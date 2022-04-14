@@ -1,5 +1,5 @@
 const Users = require("./users.js");
-const Events = require("./evenements.js");
+const Events = require("./events.js");
 
 module.exports = {
   Users,
